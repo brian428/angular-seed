@@ -7,16 +7,16 @@ var gulp = require( "gulp" ),
     ts = require( "gulp-type" ),
     tslint = require( "gulp-tslint" ),
     tsdoc = require( "gulp-typedoc" ),
-    concat = require( 'gulp-concat-sourcemap' )
-    sourcemaps = require( 'gulp-sourcemaps' );
+    concat = require( "gulp-concat-sourcemap" )
+    sourcemaps = require( "gulp-sourcemaps" );
     
 // Config variables
 var appName = "angular-seed-test",
     coffeeAppRoot = "./coffee",
-    tsAppRoot = "./app/ts",
-    tsDefRoot = "./app/ts_definitions",
+    tsAppRoot = "./app/src/ts",
+    tsDefRoot = "./app/src/ts_definitions",
     jsAppRoot = "./app",
-    tsPaths = [ tsAppRoot + '/**/*.ts', tsDefRoot + '/libs/**/*.ts' ];
+    tsPaths = [ tsAppRoot + "/**/*.ts", tsDefRoot + "/libs/**/*.ts" ];
     
 // Error logging    
 var errorHandler = function( text ) {
@@ -31,7 +31,7 @@ var tsProject = ts.createProject({
     sourceRoot: "./"
 });
 
-gulp.task( 'scriptsWithSourceMapsButNoConcat', function() {
+gulp.task( "scriptsWithSourceMapsButNoConcat", function() {
     var tsResult = gulp.src( tsPaths )
                        .pipe( sourcemaps.init() )
                        .pipe( ts( tsProject )
@@ -45,7 +45,8 @@ gulp.task( 'scriptsWithSourceMapsButNoConcat', function() {
                       .on( "error", errorHandler )
                       .on( "error", gutil.beep ) );
 });
-gulp.task( 'scripts', function() {
+gulp.task( "scripts", function() {
+    console.log( "Compiling TypeScript to: " + jsAppRoot + "/release/js/" + appName + "-all.js" );
     var tsResult = gulp.src( tsPaths )
                        .pipe( sourcemaps.init() )
                        .pipe( ts( tsProject )
@@ -54,14 +55,17 @@ gulp.task( 'scripts', function() {
 
     tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ) );
     
-    return tsResult.js.pipe( concat( appName + '-all.js' ) )
+    return tsResult.js.pipe( concat( appName + "-all.js" ) )
                       .pipe( sourcemaps.write() )
-                      .pipe( gulp.dest( jsAppRoot + '/release/js' ) );
+                      .pipe( gulp.dest( jsAppRoot + "/release/js" ) );
 });
 
-gulp.task( 'watchts', [ 'scripts' ], function() {
-    gulp.watch( tsPaths, [ 'scripts' ] );
+gulp.task( "watch", [ "scripts" ], function() {
+    console.log( "Watching for changes to TypeScript source folders: " + tsPaths );
+    gulp.watch( tsPaths, [ "scripts" ] );
 });
+
+gulp.task( "compile", [ "scripts" ] );
 
 
 
@@ -88,10 +92,10 @@ gulp.task( "lint", function() {
 } );
 
 // Grouped compile and lint task
-gulp.task( "compile", [ "lint", "coffee" ] );
+gulp.task( "compilecoffee", [ "lint", "coffee" ] );
 
 // Watch task to continuously compile and lint
-gulp.task( "watch", [ "compile" ], function() {
+gulp.task( "watchcoffee", [ "compile" ], function() {
   gulp
     .watch( coffeeAppRoot + "/**/*.coffee", [ "compile" ] );
 } );
@@ -105,4 +109,4 @@ gulp.task( "js2coffee", function() {
 } );
 
 // Default task
-gulp.task( "default", [ "compile" ] );
+gulp.task( "default", [ "watch" ] );

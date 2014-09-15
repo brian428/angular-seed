@@ -8,6 +8,6 @@ declare module todos {
         private $scope;
         private $location;
         static $inject: string[];
-        constructor($scope: Object, $location: ng.ILocationService);
+        constructor($scope: ITodoScope, $location: ng.ILocationService);
     }
 }

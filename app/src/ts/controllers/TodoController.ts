@@ -1,4 +1,5 @@
 /// <reference path='../_all.ts' />
+/// <reference path='../interfaces/ITodoScope' />
 
 module todos {
 	'use strict';
@@ -22,7 +23,7 @@ module todos {
 		// dependencies are injected via AngularJS $injector
 		// controller's name is registered in Application.ts and specified from ng-controller attribute in index.html
 		constructor(
-			private $scope: Object,
+			private $scope: ITodoScope,
 			private $location: ng.ILocationService
 		) {
 
