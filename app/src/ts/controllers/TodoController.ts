@@ -27,6 +27,7 @@ module todos {
 			private $location: ng.ILocationService
 		) {
 
+
 		}
 
 	}
