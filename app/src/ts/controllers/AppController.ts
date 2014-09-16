@@ -1,7 +1,6 @@
 /// <reference path='../_all.ts' />
-/// <reference path='../interfaces/ITodoScope' />
 
-module todos {
+module app {
 	'use strict';
 
 	/**
@@ -9,7 +8,7 @@ module todos {
 	 * - retrieves and persists the model via the todoStorage service
 	 * - exposes the model to the template and provides event handlers
 	 */
-	export class TodoController {
+	export class AppController {
 
 		// $inject annotation.
 		// It provides $injector with information about dependencies to be injected into constructor
@@ -23,10 +22,11 @@ module todos {
 		// dependencies are injected via AngularJS $injector
 		// controller's name is registered in Application.ts and specified from ng-controller attribute in index.html
 		constructor(
-			private $scope: ITodoScope,
+			private $scope: ng.IScope,
 			private $location: ng.ILocationService
 		) {
-
+            var temp = true;
+            var temp2 = true;
 
 		}
 

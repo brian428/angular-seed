@@ -53,11 +53,15 @@ gulp.task( "scripts", function() {
                        .on( "error", errorHandler )
                        .on( "error", gutil.beep ) );
 
-    tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ) );
+    tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" )
+                .on( "error", errorHandler )
+                .on( "error", gutil.beep ) );
     
     return tsResult.js.pipe( concat( appName + "-all.js" ) )
-                      .pipe( sourcemaps.write() )
-                      .pipe( gulp.dest( jsAppRoot + "/release/js" ) );
+                      .pipe( sourcemaps.write( "./" ) )
+                      .pipe( gulp.dest( jsAppRoot + "/release/js" )
+                      .on( "error", errorHandler )
+                      .on( "error", gutil.beep ) );
 });
 
 gulp.task( "watch", [ "scripts" ], function() {

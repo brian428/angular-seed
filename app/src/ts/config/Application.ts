@@ -1,5 +1,6 @@
 /// <reference path='../_all.ts' />
-/// <reference path="../controllers/TodoController.ts" />
+/// <reference path="../controllers/AppController.ts" />
+/// <reference path="../modules/main/controllers/MainController.ts" />
 
 module myApp {
     'use strict';
@@ -13,7 +14,8 @@ module myApp {
         .config( [ '$routeProvider', function( $routeProvider : ng.route.IRouteProvider ) {
             $routeProvider.otherwise( { redirectTo: '/views/view1' } );
         } ] )
-        .controller( 'todoCtrl', todos.TodoController );
+        .controller( 'appController', app.AppController )
+        .controller( 'mainController', main.MainController );
         //.directive('todoBlur', todoBlur)
         //.directive('todoFocus', todoFocus)
         //.service('todoStorage', TodoStorage);

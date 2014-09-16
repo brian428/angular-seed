@@ -1,13 +1,13 @@
-/// <reference path='../controllers/TodoController.ts' />
+/// <reference path='../controllers/MainController.ts' />
 
-module todos {
-	export interface ITodoScope extends ng.IScope {
+module main {
+	export interface IMainScope extends ng.IScope {
 		newTodo: string;
 		remainingCount: number;
 		doneCount: number;
 		allChecked: boolean;
 		statusFilter: { completed: boolean; };
 		location: ng.ILocationService;
-		vm: TodoController;
+		vm: MainController;
 	}
 }
