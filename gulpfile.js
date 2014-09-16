@@ -25,7 +25,7 @@ var errorHandler = function( text ) {
 
 // TypeScript compile task
 var tsProject = ts.createProject({
-    declarationFiles: true,
+    declarationFiles: false,
     noExternalResolve: true,
     sortOutput: true,
     sourceRoot: "./"
@@ -50,12 +50,10 @@ gulp.task( "scripts", function() {
     var tsResult = gulp.src( tsPaths )
                        .pipe( sourcemaps.init() )
                        .pipe( ts( tsProject )
-                       .on( "error", errorHandler )
-                       .on( "error", gutil.beep ) );
+                       .on( "error", errorHandler ) );
 
-    tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" )
-                .on( "error", errorHandler )
-                .on( "error", gutil.beep ) );
+    // Comment in to generate definition files for application classes.
+    //tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ).on( "error", errorHandler ) );
     
     return tsResult.js.pipe( concat( appName + "-all.js" ) )
                       .pipe( sourcemaps.write( "./" ) )

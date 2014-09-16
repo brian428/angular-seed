@@ -3,31 +3,27 @@
 module app {
 	'use strict';
 
-	/**
-	 * The main controller for the app. The controller:
-	 * - retrieves and persists the model via the todoStorage service
-	 * - exposes the model to the template and provides event handlers
-	 */
 	export class AppController {
 
-		// $inject annotation.
-		// It provides $injector with information about dependencies to be injected into constructor
-		// it is better to have it close to the constructor, because the parameters must match in count and type.
-		// See http://docs.angularjs.org/guide/di
-		public static $inject = [
+		private scope : app.IAppScope;
+        private scenarioService: app.ScenarioService;
+
+        public static $inject = [
 			'$scope',
+            'scenarioService',
 			'$location'
 		];
 
-		// dependencies are injected via AngularJS $injector
-		// controller's name is registered in Application.ts and specified from ng-controller attribute in index.html
-		constructor(
-			private $scope: ng.IScope,
-			private $location: ng.ILocationService
-		) {
-            var temp = true;
-            var temp2 = true;
-
+		constructor( $scope: app.IAppScope, scenarioService: app.ScenarioService, $location: ng.ILocationService ) {
+            this.scope = $scope;
+            this.scope.vm = this;
+            this.scope.tabs = [];
+            this.scenarioService = scenarioService;
+            this.scenarioService.loadInitialData().then(
+                ( data: any ) => {
+                    this.scope.scenarios = data;
+                }
+            );
 		}
 
 	}

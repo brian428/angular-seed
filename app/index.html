@@ -18,19 +18,76 @@
   <link rel="stylesheet" href="app.css"/>
   <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
-<body>
-  <ul class="menu">
-    <li><a href="#/views/view1">view1</a></li>
-    <li><a href="#/views/view2">view2</a></li>
-  </ul>
+<body ng-app="myApp" ng-strict-di>
+<div class="container" ng-controller="AppController">
+	<div class="row clearfix">
+		<div class="col-md-12 column">
+            <div ng-include="'views/layout/header.html'"></div>
 
-  <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-  <![endif]-->
+            <tabset style="border: thin;">
+                <tab heading="Scenarios">
 
-  <div ng-view></div>
+                    <div class="row clearfix">
+                        <div class="col-md-12 column">
+                            <h3>
+                                h3. Lorem ipsum dolor sit amet.
+                            </h3>
+                            <p>
+                                Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>.
+                                Aliquam eget sapien sapien. Curabitur in metus urna. In hac habitasse platea dictumst.
+                                Phasellus eu sem sapien, sed vestibulum velit. Nam purus nibh, lacinia non faucibus et,
+                                pharetra in dolor. Sed iaculis posuere diam ut cursus. <em>Morbi commodo sodales nisi
+                                id sodales. Proin consectetur, nisi id commodo imperdiet, metus nunc consequat lectus,
+                                id bibendum diam velit et dui.</em> Proin massa magna, vulputate nec bibendum nec,
+                                posuere nec lacus. <small>Aliquam mi erat, aliquam vel luctus eu, pharetra quis elit.
+                                Nulla euismod ultrices massa, et feugiat ipsum consequat eu.</small>
+                            </p>
+                            <p>
+                                <button type="button" class="btn btn-primary">Default</button>
+                                <a href="#" class="btn" type="button">Button</a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="jumbotron">
+                        <h1>
+                            Hello, world!
+                        </h1>
+                        <p>
+                            This is a template for a simple marketing or informational website. It includes a large
+                            callout called the hero unit and three supporting pieces of content. Use it as a starting
+                            point to create something more unique.
+                        </p>
+                        <p>
+                            <a class="btn btn-primary btn-large" href="#">Learn more</a>
+                        </p>
+                    </div>
 
-  <div>Angular seed app: v<span app-version></span></div>
+                </tab>
+
+                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                    <p>{{tab.content}}</p>
+                    <div ng-include="tab.template"></div>
+                    <p></p>
+                </tab>
+
+                <!--
+                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                    {{tab.content}}
+                </tab>
+                <tab select="alertMe()">
+                    <tab-heading>
+                        <i class="glyphicon glyphicon-bell"></i> Alert!
+                    </tab-heading>
+                    I've got an HTML heading, and a select callback. Pretty cool!
+                </tab>
+                -->
+            </tabset>
+
+
+
+            <div ng-view></div>
+
+            <div>Angular seed app: v<span app-version></span></div>
 
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
