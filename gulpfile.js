@@ -13,9 +13,11 @@ var gulp = require( "gulp" ),
 // Config variables
 var appName = "angular-seed-test",
     coffeeAppRoot = "./coffee",
+    jsAppRoot = "./app",
+    outputRoot = jsAppRoot + "/release/js",
+    sourceMapSourceRoot = "../../src/ts",
     tsAppRoot = "./app/src/ts",
     tsDefRoot = "./app/src/ts_definitions",
-    jsAppRoot = "./app",
     tsPaths = [ tsAppRoot + "/**/*.ts", tsDefRoot + "/libs/**/*.ts" ];
     
 // Error logging    
@@ -31,20 +33,6 @@ var tsProject = ts.createProject({
     sourceRoot: "./"
 });
 
-gulp.task( "scriptsWithSourceMapsButNoConcat", function() {
-    var tsResult = gulp.src( tsPaths )
-                       .pipe( sourcemaps.init() )
-                       .pipe( ts( tsProject )
-                       .on( "error", errorHandler )
-                       .on( "error", gutil.beep ) );
-
-    tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ) );
-    
-    return tsResult.js.pipe( sourcemaps.write( { sourceRoot: tsAppRoot, addComment: true } ) )
-                      .pipe( gulp.dest( jsAppRoot )
-                      .on( "error", errorHandler )
-                      .on( "error", gutil.beep ) );
-});
 gulp.task( "scripts", function() {
     console.log( "Compiling TypeScript to: " + jsAppRoot + "/release/js/" + appName + "-all.js" );
     var tsResult = gulp.src( tsPaths )
@@ -55,11 +43,11 @@ gulp.task( "scripts", function() {
     // Comment in to generate definition files for application classes.
     //tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ).on( "error", errorHandler ) );
     
-    return tsResult.js.pipe( concat( appName + "-all.js" ) )
-                      .pipe( sourcemaps.write( "./" ) )
-                      .pipe( gulp.dest( jsAppRoot + "/release/js" )
-                      .on( "error", errorHandler )
-                      .on( "error", gutil.beep ) );
+    tsResult.js.pipe( concat( appName + "-all.js" ) )
+               .pipe( sourcemaps.write( "./", { sourceRoot: sourceMapSourceRoot } ) )
+               .pipe( gulp.dest( outputRoot )
+               .on( "error", errorHandler )
+               .on( "error", gutil.beep ) );
 });
 
 gulp.task( "watch", [ "scripts" ], function() {
@@ -68,6 +56,22 @@ gulp.task( "watch", [ "scripts" ], function() {
 });
 
 gulp.task( "compile", [ "scripts" ] );
+
+
+gulp.task( "scriptsWithSourceMapsButNoConcat", function() {
+    var tsResult = gulp.src( tsPaths )
+                       .pipe( sourcemaps.init() )
+                       .pipe( ts( tsProject )
+                       .on( "error", errorHandler )
+                       .on( "error", gutil.beep ) );
+
+    tsResult.dts.pipe( gulp.dest( tsDefRoot + "/app" ) );
+    
+    tsResult.js.pipe( sourcemaps.write( { sourceRoot: tsAppRoot, addComment: true } ) )
+               .pipe( gulp.dest( jsAppRoot )
+               .on( "error", errorHandler )
+               .on( "error", gutil.beep ) );
+});
 
 
 

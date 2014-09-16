@@ -1,4 +1,4 @@
-/// <reference path='../controllers/AppController.ts' />
+/// <reference path='../_all.ts' />
 
 module app {
 	export interface IDataResult {
