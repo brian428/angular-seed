@@ -15,15 +15,52 @@ var app;
             this.scope.vm = this;
             this.scope.tabs = [];
             this.scenarioService = scenarioService;
-
+            this.loadInitialData();
+        }
+        AppController.prototype.loadInitialData = function () {
             var me = this;
             this.scenarioService.loadInitialData().then(function (data) {
                 me.scope.scenarios = data.scenarios;
                 me.scope.affectedItems = data.affectedItems;
                 me.scope.probabilities = data.probabilities;
                 me.scope.revenueImpacts = data.revenueImpacts;
+
+                // Test adding a scenario to the tabs.
+                angular.forEach(me.scope.scenarios, function (thisScenario, index) {
+                    var value = {
+                        title: thisScenario.name,
+                        content: thisScenario.description,
+                        disabled: false
+                    };
+                    me.scope.tabs.push(value);
+                });
             });
-        }
+        };
+
+        AppController.prototype.addTestScenario = function () {
+            var testScenario = new app.Scenario();
+            testScenario.id = 1;
+            testScenario.name = "Test Scenario";
+            testScenario.description = "Test scenario description.";
+            testScenario.dateUpdated = new Date();
+            testScenario.probability = this.scope.probabilities[3];
+            testScenario.impactCost = 8.99;
+            testScenario.impactLength = 2;
+            testScenario.planEffectiveness = "Good";
+            testScenario.totalImpact = 19.99;
+
+            var item = new app.ScenarioItem();
+            item.id = 1;
+            item.itemDescription = "Item 1";
+            item.cost = 42;
+            item.timeToRecover = 8;
+            item.impactSeverity = this.scope.revenueImpacts[2];
+            item.affectedItem = this.scope.affectedItems[4];
+
+            testScenario.scenarioItems.push(item);
+
+            this.scenarioService.saveScenarios([testScenario]);
+        };
         AppController.$inject = [
             '$scope',
             'scenarioService',
@@ -158,6 +195,18 @@ var app;
 })(app || (app = {}));
 
 
+/// <reference path="" />
+var app;
+(function (app) {
+    var InitialDataMap = (function () {
+        function InitialDataMap() {
+        }
+        return InitialDataMap;
+    })();
+    app.InitialDataMap = InitialDataMap;
+})(app || (app = {}));
+
+
 var app;
 (function (app) {
     var Probability = (function () {
@@ -184,6 +233,7 @@ var app;
 (function (app) {
     var Scenario = (function () {
         function Scenario() {
+            this.scenarioItems = [];
         }
         return Scenario;
     })();
@@ -231,18 +281,6 @@ var main;
     })();
     main.MainController = MainController;
 })(main || (main = {}));
-
-
-/// <reference path="" />
-var app;
-(function (app) {
-    var InitialDataMap = (function () {
-        function InitialDataMap() {
-        }
-        return InitialDataMap;
-    })();
-    app.InitialDataMap = InitialDataMap;
-})(app || (app = {}));
 
 
 
