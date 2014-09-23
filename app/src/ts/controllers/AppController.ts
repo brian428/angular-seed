@@ -1,7 +1,6 @@
 /// <reference path='../_all.ts' />
 
 module app {
-	'use strict';
 
 	export class AppController {
 
@@ -19,9 +18,14 @@ module app {
             this.scope.vm = this;
             this.scope.tabs = [];
             this.scenarioService = scenarioService;
+
+            var me = this;
             this.scenarioService.loadInitialData().then(
-                ( data: any ) => {
-                    this.scope.scenarios = data;
+                ( data: InitialDataMap ) => {
+                    me.scope.scenarios = data.scenarios;
+                    me.scope.affectedItems = data.affectedItems;
+                    me.scope.probabilities = data.probabilities;
+                    me.scope.revenueImpacts = data.revenueImpacts;
                 }
             );
 		}

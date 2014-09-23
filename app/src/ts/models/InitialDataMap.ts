@@ -1,13 +1,14 @@
-/// <reference path='../_all.ts' />
+/// <reference path="" />
 
 module app {
-	export interface IAppScope extends ng.IScope {
+
+    export class InitialDataMap {
+
         scenarios: Scenario[];
         probabilities: Probability[];
         revenueImpacts: RevenueImpact[];
         affectedItems: AffectedItem[];
-		tabs: Array<Scenario>;
-		location: ng.ILocationService;
-		vm: AppController;
+
 	}
+
 }
