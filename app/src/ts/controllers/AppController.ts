@@ -31,10 +31,6 @@ module app {
                     me.scope.revenueImpacts = data.revenueImpacts;
                     me.scope.effectivenessRatings = data.effectivenessRatings;
 
-                    angular.forEach( me.scope.scenarios, ( thisScenario:Scenario, index ) => {
-                        console.log( thisScenario.name );
-                    } )
-
                     // Test adding a scenario to the tabs.
                     /*
                     angular.forEach( me.scope.scenarios, ( thisScenario:Scenario, index ) => {
@@ -48,6 +44,21 @@ module app {
                     */
                 }
             );
+        }
+
+        newScenario() {
+            var value:any = {
+                title: "New Scenario",
+                content: "New scenario form",
+                scenario: new Scenario(),
+                active: true,
+                template: "views/scenario/scenario-form.html"
+            };
+            value.scenario.name = "New Scenario"
+            value.scenario.description = "New scenario description."
+
+            this.scope.tabs.push( value );
+            console.log( "tab added" );
         }
 
         addTestScenario() {

@@ -23,160 +23,47 @@
     <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
 </head>
 <body>
-<div class="container" ng-controller="AppController">
-    <div class="row clearfix">
-        <div class="col-md-12 column">
-            <div ng-include="'views/layout/header.html'"></div>
+    <div class="container" ng-controller="AppController">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
 
-            <tabset style="border: thin">
-                <tab heading="Scenarios">
+                <div ng-include="'views/layout/header.html'"></div>
 
-                    <!-- Scenario list controls -->
-                    <nav class="navbar navbar-default" role="navigation">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input type="text" ng-model="scenarioFilter" clear-input class="form-control" placeholder="Filter Scenarios">
-                                <button type="button" class="btn btn-primary" ng-click="vm.addTestScenario()">Add Test Scenario</button>
-                            </div>
-                        </form>
-                    </nav>
+                <tabset style="border: thin">
 
-                    <!-- Scenarios -->
-                    <div class="row">
+                    <tab heading="Scenarios">
+                        <div ng-include="'views/scenario/scenario-list.html'"></div>
+                    </tab>
 
-                        <div class="col-sm-6 col-md-4" ng-repeat="scenario in scenarios track by $index">
+                    <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
+                        <div ng-include="tab.template"></div>
+                        <p></p>
+                    </tab>
 
-                            <div class="thumbnail no-border">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading"><a href="#">{{ scenario.name }}</a></div>
-                                    <div class="panel-body">
-                                        <ul class="list-unstyled">
-                                            <li>Total Impact: {{ scenario.totalImpact | currency }} ({{ scenario.impactLength }} days)</li>
-                                            <li>Plan Effectiveness: <span class="label {{ scenario.planEffectiveness.value }}">{{ scenario.planEffectiveness.value }}</span></li>
-                                        </ul>
-                                        <ul class="list-unstyled">
-                                            <li>
-                                                <small>Probability: {{ scenario.probability.value }}</small>
-                                            </li>
-                                            <li>
-                                                <small>Updated: {{ scenario.dateUpdated | date : "short" }}</small>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
+                </tabset>
 
-                                <!--
-                                <div class="caption">
-                                    <h4><a href="#">Scenario Name Might be Longer</a></h4>
+                <div ng-view></div>
 
-                                    <ul class="list-unstyled">
-                                        <li>Total Impact: $1983.00 (10 days)</li>
-                                        <li>Plan Effectiveness: Excellent</li>
-                                    </ul>
-                                    <ul class="list-unstyled">
-                                        <li>
-                                            <small>Probability: Very Low (Less Than 10%)</small>
-                                        </li>
-                                        <li>
-                                            <small>Updated: 9/14/2014 9:29 PM</small>
-                                        </li>
-                                    </ul>
-                                </div>
-                                -->
+            </div>
+        </div>
+    </div>
 
-                            </div>
-                        </div>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/select2/select2.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-select2/src/select2.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script type="text/javascript" src="bower_components/ng-grid/ng-grid-2.0.13.debug.js"></script>
+    <script type="text/javascript" src="bower_components/angular-clear-input/angular-clear-input.js"></script>
+    <script type="text/javascript" src="release/js/angular-seed-test-all.js"></script>
+    <!-- <script type="text/javascript" src="app.js"></script> -->
+    <script type="text/javascript" src="views/view1/view1.js"></script>
+    <script type="text/javascript" src="views/view2/view2.js"></script>
+    <script type="text/javascript" src="components/version/version.js"></script>
+    <script type="text/javascript" src="components/version/version-directive.js"></script>
+    <script type="text/javascript" src="components/version/interpolate-filter.js"></script>
 
-                    </div>
-
-                    <div class="row clearfix">
-                        <div class="col-md-12 column">
-
-                            <h3>
-                                h3. Lorem ipsum dolor sit amet.
-                            </h3>
-
-                            <p>
-                                Lorem ipsum dolor sit amet, <strong>consectetur adipiscing elit</strong>.
-                                Aliquam eget sapien sapien. Curabitur in metus urna. In hac habitasse platea dictumst.
-                                Phasellus eu sem sapien, sed vestibulum velit. Nam purus nibh, lacinia non faucibus et,
-                                pharetra in dolor. Sed iaculis posuere diam ut cursus. <em>Morbi commodo sodales nisi
-                                id sodales. Proin consectetur, nisi id commodo imperdiet, metus nunc consequat lectus,
-                                id bibendum diam velit et dui.</em> Proin massa magna, vulputate nec bibendum nec,
-                                posuere nec lacus.
-                                <small>Aliquam mi erat, aliquam vel luctus eu, pharetra quis elit.
-                                    Nulla euismod ultrices massa, et feugiat ipsum consequat eu.
-                                </small>
-                            </p>
-                            <p>
-                                <button type="button" class="btn btn-primary" ng-click="vm.addTestScenario()">Add Test
-                                    Scenario
-                                </button>
-                                <a href="#" class="btn" type="button">Button</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="jumbotron">
-                        <h1>
-                            Hello, world!
-                        </h1>
-
-                        <p>
-                            This is a template for a simple marketing or informational website. It includes a large
-                            callout called the hero unit and three supporting pieces of content. Use it as a starting
-                            point to create something more unique.
-                        </p>
-
-                        <p>
-                            <a class="btn btn-primary btn-large" href="#">Learn more</a>
-                        </p>
-                    </div>
-
-                </tab>
-
-                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-                    <p>{{tab.content}}</p>
-
-                    <div ng-include="tab.template"></div>
-                    <p></p>
-                </tab>
-
-                <!--
-                <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disabled="tab.disabled">
-                    {{tab.content}}
-                </tab>
-                <tab select="alertMe()">
-                    <tab-heading>
-                        <i class="glyphicon glyphicon-bell"></i> Alert!
-                    </tab-heading>
-                    I've got an HTML heading, and a select callback. Pretty cool!
-                </tab>
-                -->
-            </tabset>
-
-
-            <div ng-view></div>
-
-            <div>Angular seed app: v<span app-version></span></div>
-
-            <!-- In production use:
-            <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-            -->
-            <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
-            <script type="text/javascript" src="bower_components/select2/select2.js"></script>
-            <script src="bower_components/angular/angular.js"></script>
-            <script src="bower_components/angular-route/angular-route.js"></script>
-            <script type="text/javascript" src="bower_components/angular-ui-select2/src/select2.js"></script>
-            <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
-            <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-            <script type="text/javascript" src="bower_components/ng-grid/ng-grid-2.0.13.debug.js"></script>
-            <script type="text/javascript" src="bower_components/angular-clear-input/angular-clear-input.js"></script>
-            <script type="text/javascript" src="release/js/angular-seed-test-all.js"></script>
-            <!-- <script type="text/javascript" src="app.js"></script> -->
-            <script type="text/javascript" src="views/view1/view1.js"></script>
-            <script type="text/javascript" src="views/view2/view2.js"></script>
-            <script type="text/javascript" src="components/version/version.js"></script>
-            <script type="text/javascript" src="components/version/version-directive.js"></script>
-            <script type="text/javascript" src="components/version/interpolate-filter.js"></script>
 </body>
 </html>

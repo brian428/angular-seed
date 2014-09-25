@@ -1,0 +1,20 @@
+
+<div class="row clearfix">
+    <div class="col-md-12 column">
+        <div>Name: {{ scenario.name }}</div>
+        <div>Description: {{ scenario.description }}</div>
+
+        <ul class="list-unstyled">
+            <li>Total Impact: {{ scenario.totalImpact | currency }} ({{ scenario.impactLength }} days)</li>
+            <li>Plan Effectiveness: <span class="label {{ scenario.planEffectiveness.value }}">{{ scenario.planEffectiveness.value }}</span></li>
+        </ul>
+        <ul class="list-unstyled">
+            <li>
+                <small>Probability: {{ scenario.probability.value }}</small>
+            </li>
+            <li>
+                <small>Updated: {{ scenario.dateUpdated | date : "short" }}</small>
+            </li>
+        </ul>
+    </div>
+</div>
