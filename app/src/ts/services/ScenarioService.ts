@@ -70,6 +70,19 @@ module app {
             return deferred.promise;
         }
 
+        loadEffectivenessRatings(): ng.IPromise<any> {
+            var deferred: ng.IDeferred<any> = this.promiseService.defer();
+            var _this = this;
+
+            this.httpService.get( "data/effectivenessRatings.json" ).then(
+                ( result: IDataResult ) => {
+                    deferred.resolve( result.data.data );
+                }
+            );
+
+            return deferred.promise;
+        }
+
         loadInitialData(): ng.IPromise<any> {
             var deferred: ng.IDeferred<any> = this.promiseService.defer();
             var _this = this;
@@ -79,13 +92,15 @@ module app {
                 this.loadProbabilities(),
                 this.loadRevenueImpacts(),
                 this.loadAffectedItems(),
+                this.loadEffectivenessRatings(),
                 this.loadScenarios()
             ]).then(
                 ( result: Object[] ) => {
                     finalResult.probabilities = <Probability[]>result[ 0 ];
                     finalResult.revenueImpacts = <RevenueImpact[]>result[ 1 ];
                     finalResult.affectedItems = <AffectedItem[]>result[ 2 ];
-                    finalResult.scenarios = <Scenario[]>result[ 3 ];
+                    finalResult.effectivenessRatings = <EffectivenessRating[]>result[ 3 ];
+                    finalResult.scenarios = <Scenario[]>result[ 4 ];
                     deferred.resolve( finalResult );
                 }
             );

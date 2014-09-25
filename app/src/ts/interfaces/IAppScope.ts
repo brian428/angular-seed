@@ -5,6 +5,7 @@ module app {
         scenarios: Scenario[];
         probabilities: Probability[];
         revenueImpacts: RevenueImpact[];
+        effectivenessRatings: EffectivenessRating[];
         affectedItems: AffectedItem[];
 		tabs: Array<Scenario>;
 		location: ng.ILocationService;

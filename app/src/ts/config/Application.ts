@@ -8,6 +8,7 @@ module app {
     angular.module( "angularPhoenix", [
         'ui.bootstrap',
         'ngRoute',
+        'dcbClearInput',
         'myApp.views.view1',
         'myApp.views.view2',
         'myApp.version'

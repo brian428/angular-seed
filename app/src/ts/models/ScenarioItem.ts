@@ -2,7 +2,7 @@ module app {
 
     export class ScenarioItem {
 
-        id: number;
+        id: string;
         affectedItem: AffectedItem;
         itemDescription: string;
         timeToRecover: number;

@@ -11,7 +11,7 @@ module app {
         impactCost: number;
         impactLength: number;
         totalImpact: number;
-        planEffectiveness: string;
+        planEffectiveness: EffectivenessRating;
         scenarioItems: ScenarioItem[] = [];
 
 	}

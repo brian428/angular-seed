@@ -8,6 +8,7 @@ module app {
         probabilities: Probability[];
         revenueImpacts: RevenueImpact[];
         affectedItems: AffectedItem[];
+        effectivenessRatings: EffectivenessRating[];
 
 	}
 

@@ -24,42 +24,67 @@ var app;
                 me.scope.affectedItems = data.affectedItems;
                 me.scope.probabilities = data.probabilities;
                 me.scope.revenueImpacts = data.revenueImpacts;
+                me.scope.effectivenessRatings = data.effectivenessRatings;
 
-                // Test adding a scenario to the tabs.
                 angular.forEach(me.scope.scenarios, function (thisScenario, index) {
-                    var value = {
-                        title: thisScenario.name,
-                        content: thisScenario.description,
-                        disabled: false
-                    };
-                    me.scope.tabs.push(value);
+                    console.log(thisScenario.name);
                 });
+                // Test adding a scenario to the tabs.
+                /*
+                angular.forEach( me.scope.scenarios, ( thisScenario:Scenario, index ) => {
+                var value:any = {
+                title: thisScenario.name,
+                content: thisScenario.description,
+                disabled: false
+                };
+                me.scope.tabs.push( value );
+                } )
+                */
             });
         };
 
         AppController.prototype.addTestScenario = function () {
             var testScenario = new app.Scenario();
-            testScenario.id = 1;
-            testScenario.name = "Test Scenario";
-            testScenario.description = "Test scenario description.";
+            testScenario.id = this.scope.scenarios.length + 1;
+            testScenario.name = "Test Scenario " + testScenario.id;
+            testScenario.description = "Test scenario " + testScenario.id + " description.";
             testScenario.dateUpdated = new Date();
-            testScenario.probability = this.scope.probabilities[3];
-            testScenario.impactCost = 8.99;
-            testScenario.impactLength = 2;
-            testScenario.planEffectiveness = "Good";
-            testScenario.totalImpact = 19.99;
+            testScenario.probability = this.scope.probabilities[this.getRandomInt(0, this.scope.probabilities.length - 1)];
+            testScenario.impactCost = this.getRandomInt(100, 1000);
+            testScenario.impactLength = this.getRandomInt(5, 20);
+            testScenario.planEffectiveness = this.scope.effectivenessRatings[this.getRandomInt(0, this.scope.effectivenessRatings.length - 1)];
+            testScenario.totalImpact = this.getRandomInt(500, 10000);
 
             var item = new app.ScenarioItem();
-            item.id = 1;
-            item.itemDescription = "Item 1";
-            item.cost = 42;
-            item.timeToRecover = 8;
-            item.impactSeverity = this.scope.revenueImpacts[2];
-            item.affectedItem = this.scope.affectedItems[4];
+            item.id = this.createUUID();
+            item.itemDescription = "Scenario Item " + item.id;
+            item.cost = this.getRandomInt(100, 500);
+            item.timeToRecover = this.getRandomInt(5, 20);
+            item.impactSeverity = this.scope.revenueImpacts[this.getRandomInt(0, this.scope.revenueImpacts.length - 1)];
+            item.affectedItem = this.scope.affectedItems[this.getRandomInt(0, this.scope.affectedItems.length - 1)];
 
             testScenario.scenarioItems.push(item);
+            this.scope.scenarios.push(testScenario);
+            this.scenarioService.saveScenarios(this.scope.scenarios);
+        };
 
-            this.scenarioService.saveScenarios([testScenario]);
+        AppController.prototype.getRandomInt = function (min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        };
+
+        AppController.prototype.createUUID = function () {
+            // http://www.ietf.org/rfc/rfc4122.txt
+            var s = [];
+            var hexDigits = "0123456789abcdef";
+            for (var i = 0; i < 36; i++) {
+                s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+            }
+            s[14] = "4"; // bits 12-15 of the time_hi_and_version field to 0010
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
+            s[8] = s[13] = s[18] = s[23] = "-";
+
+            var uuid = s.join("");
+            return uuid;
         };
         AppController.$inject = [
             '$scope',
@@ -127,6 +152,17 @@ var app;
             return deferred.promise;
         };
 
+        ScenarioService.prototype.loadEffectivenessRatings = function () {
+            var deferred = this.promiseService.defer();
+            var _this = this;
+
+            this.httpService.get("data/effectivenessRatings.json").then(function (result) {
+                deferred.resolve(result.data.data);
+            });
+
+            return deferred.promise;
+        };
+
         ScenarioService.prototype.loadInitialData = function () {
             var deferred = this.promiseService.defer();
             var _this = this;
@@ -136,12 +172,14 @@ var app;
                 this.loadProbabilities(),
                 this.loadRevenueImpacts(),
                 this.loadAffectedItems(),
+                this.loadEffectivenessRatings(),
                 this.loadScenarios()
             ]).then(function (result) {
                 finalResult.probabilities = result[0];
                 finalResult.revenueImpacts = result[1];
                 finalResult.affectedItems = result[2];
-                finalResult.scenarios = result[3];
+                finalResult.effectivenessRatings = result[3];
+                finalResult.scenarios = result[4];
                 deferred.resolve(finalResult);
             });
 
@@ -167,6 +205,7 @@ var app;
     angular.module("angularPhoenix", [
         'ui.bootstrap',
         'ngRoute',
+        'dcbClearInput',
         'myApp.views.view1',
         'myApp.views.view2',
         'myApp.version'
@@ -192,6 +231,17 @@ var app;
         return AffectedItem;
     })();
     app.AffectedItem = AffectedItem;
+})(app || (app = {}));
+
+
+var app;
+(function (app) {
+    var EffectivenessRating = (function () {
+        function EffectivenessRating() {
+        }
+        return EffectivenessRating;
+    })();
+    app.EffectivenessRating = EffectivenessRating;
 })(app || (app = {}));
 
 
